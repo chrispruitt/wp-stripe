@@ -2,9 +2,11 @@
 
 class WPStripe {
     function __construct() {
+        $options = get_option('my_option_name');
+
         $stripe = array(
-            'secret_key'      => 'sk_test_COkxTNWdVFrfHcwJtqp6LBid',
-            'publishable_key' => 'pk_test_fpJbqfr3gzCWFeSJaTBL6uhu'
+            'secret_key'      => $options['test_secret_key'],
+            'publishable_key' => $options['test_publishable_key']
         );
 
         Stripe::setApiKey($stripe['secret_key']);
