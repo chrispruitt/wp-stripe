@@ -1,7 +1,5 @@
 <?php
 
-require_once('../stripe/lib/Stripe.php');
-
 class WPStripe {
     function __construct() {
         $stripe = array(
