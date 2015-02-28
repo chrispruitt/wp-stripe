@@ -23,7 +23,7 @@ class SettingsPage {
         // This page will be under "Settings"
         add_options_page(
             'Settings Admin',
-            'My Settings',
+            'WP Stripe',
             'manage_options',
             'my-setting-admin',
             array( $this, 'create_admin_page' )
@@ -113,6 +113,14 @@ class SettingsPage {
             'live-settings', // Page
             'setting_section_id' // Section
         );
+
+        add_settings_field(
+            'key_to_use', // ID
+            'Which key would you like to use?', // Title
+            array( $this, 'key_to_use_callback' ), // Callback
+            'live-settings', // Page
+            'setting_section_id' // Section
+        );
     }
 
     /**
@@ -135,6 +143,9 @@ class SettingsPage {
         if( isset( $input['live_publishable_key'] ) ) {
             $new_input['live_publishable_key'] = sanitize_text_field($input['live_publishable_key']);
         }
+        if( isset( $input['key_to_use'] ) ) {
+            $new_input['key_to_use'] = $input['key_to_use'];
+        }
 
         return $new_input;
     }
@@ -153,29 +164,40 @@ class SettingsPage {
     public function test_secret_key_callback()
     {
         printf(
-            '<input type="text" id="test_secret_key" name="my_option_name[test_secret_key]" value="%s" />',
+            '<input type="text" id="test_secret_key" name="my_option_name[test_secret_key]" value="%s" class="regular-text"/>',
             isset( $this->options['test_secret_key'] ) ? esc_attr( $this->options['test_secret_key']) : ''
         );
     }
     public function test_publishable_key_callback()
     {
         printf(
-            '<input type="text" id="test_publishable_key" name="my_option_name[test_publishable_key]" value="%s" />',
+            '<input type="text" id="test_publishable_key" name="my_option_name[test_publishable_key]" value="%s" class="regular-text"/>',
             isset( $this->options['test_publishable_key'] ) ? esc_attr( $this->options['test_publishable_key']) : ''
         );
     }
     public function live_secret_key_callback()
     {
         printf(
-            '<input type="text" id="live_secret_key" name="my_option_name[live_secret_key]" value="%s" />',
+            '<input type="text" id="live_secret_key" name="my_option_name[live_secret_key]" value="%s" class="regular-text"/>',
             isset( $this->options['live_secret_key'] ) ? esc_attr( $this->options['live_secret_key']) : ''
         );
     }
     public function live_publishable_key_callback()
     {
         printf(
-            '<input type="text" id="live_publishable_key" name="my_option_name[live_publishable_key]" value="%s" />',
+            '<input type="text" id="live_publishable_key" name="my_option_name[live_publishable_key]" value="%s" class="regular-text"/>',
             isset( $this->options['live_publishable_key'] ) ? esc_attr( $this->options['live_publishable_key']) : ''
+        );
+    }
+    public function key_to_use_callback() {
+        printf(
+            '<input type="radio" name="my_option_name[key_to_use]" value="test" %s/>Use Test Key',
+            isset( $this->options['key_to_use'] ) && $this->options['key_to_use'] == 'test' ? 'checked' : ''
+        );
+        print('<br />');
+        printf(
+            '<input type="radio" name="my_option_name[key_to_use]" value="live" %s/>Use Live Key',
+            isset( $this->options['key_to_use'] ) && $this->options['key_to_use'] == 'live' ? 'checked' : ''
         );
     }
 }
