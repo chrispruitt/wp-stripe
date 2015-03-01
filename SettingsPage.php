@@ -45,6 +45,7 @@ class SettingsPage {
                 <?php
                 // This prints out all hidden setting fields
                 settings_fields( 'my_option_group' );
+                do_settings_sections( 'global-settings' );
                 do_settings_sections( 'test-settings' );
                 ?>
                 <hr />
@@ -80,6 +81,12 @@ class SettingsPage {
             'Live Settings', // Title
             $this, // Callback
             'live-settings' // Page Section
+        );
+        add_settings_section(
+            'setting_section_id', // ID
+            '', // Title
+            $this, // Callback
+            'global-settings' // Page Section
         );
 
         add_settings_field(
@@ -118,7 +125,7 @@ class SettingsPage {
             'key_to_use', // ID
             'Which key would you like to use?', // Title
             array( $this, 'key_to_use_callback' ), // Callback
-            'live-settings', // Page
+            'global-settings', // Page
             'setting_section_id' // Section
         );
     }
@@ -191,12 +198,13 @@ class SettingsPage {
     }
     public function key_to_use_callback() {
         printf(
-            '<input type="radio" name="my_option_name[key_to_use]" value="test" %s/>Use Test Key',
+            '<input type="radio" name="my_option_name[key_to_use]" value="test" %s/>Test Key',
             isset( $this->options['key_to_use'] ) && $this->options['key_to_use'] == 'test' ? 'checked' : ''
         );
         print('<br />');
+        print('<br />');
         printf(
-            '<input type="radio" name="my_option_name[key_to_use]" value="live" %s/>Use Live Key',
+            '<input type="radio" name="my_option_name[key_to_use]" value="live" %s/>Live Key',
             isset( $this->options['key_to_use'] ) && $this->options['key_to_use'] == 'live' ? 'checked' : ''
         );
     }
